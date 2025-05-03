@@ -1,11 +1,20 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
+import Summarizer from './pages/Summarizer';
+import ImageCaptioner from './pages/ImageCaptioner';
 
 function App() {
   return (
-    <div>
-      <h1>SmartContentAI</h1>
-      <p>Dual Service: Text Summarization & Image Captioning</p>
-    </div>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/summarize" element={<Summarizer />} />
+        <Route path="/caption" element={<ImageCaptioner />} />
+      </Routes>
+    </Router>
   );
 }
 
