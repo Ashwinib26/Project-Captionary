@@ -3,21 +3,22 @@ import axios from 'axios';
 
 const Summarizer = () => {
   const [text, setText] = useState('');
-  const [mode, setMode] = useState('extractive');
   const [summary, setSummary] = useState('');
+  const [abstractSummary, setAbstractSummary] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/summarize', { text, mode });
+      const response = await axios.post('/', { input_text: text });
       setSummary(response.data.summary);
+      setAbstractSummary(response.data.abstract_summary);
     } catch (error) {
       console.error('Error summarizing:', error);
     }
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
+    <div>
       <h2>Text Summarizer</h2>
       <form onSubmit={handleSubmit}>
         <textarea
@@ -26,38 +27,13 @@ const Summarizer = () => {
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Enter your text here..."
-          required
         ></textarea>
         <br />
-        <label>
-          <input
-            type="radio"
-            name="mode"
-            value="extractive"
-            checked={mode === 'extractive'}
-            onChange={() => setMode('extractive')}
-          />
-          Extractive
-        </label>
-        <label style={{ marginLeft: '1rem' }}>
-          <input
-            type="radio"
-            name="mode"
-            value="abstractive"
-            checked={mode === 'abstractive'}
-            onChange={() => setMode('abstractive')}
-          />
-          Abstractive
-        </label>
-        <br /><br />
         <button type="submit">Generate Summary</button>
       </form>
-      {summary && (
-        <div style={{ marginTop: '2rem' }}>
-          <h3>Summary:</h3>
-          <p>{summary}</p>
-        </div>
-      )}
+
+      {summary && <div><h3>Extractive Summary:</h3><p>{summary}</p></div>}
+      {abstractSummary && <div><h3>Abstractive Summary:</h3><p>{abstractSummary}</p></div>}
     </div>
   );
 };

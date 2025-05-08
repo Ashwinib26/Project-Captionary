@@ -11,9 +11,7 @@ const ImageCaptioner = () => {
     formData.append('image', image);
 
     try {
-      const response = await axios.post('/caption', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      const response = await axios.post('/', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       setCaption(response.data.caption);
     } catch (error) {
       console.error('Error generating caption:', error);
@@ -21,21 +19,16 @@ const ImageCaptioner = () => {
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
+    <div>
       <h2>Image Caption Generator</h2>
       <form onSubmit={handleSubmit}>
         <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} required />
-        <br /><br />
+        <br />
         <button type="submit">Generate Caption</button>
       </form>
-      {caption && (
-        <div style={{ marginTop: '2rem' }}>
-          <h3>Generated Caption:</h3>
-          <p>{caption}</p>
-        </div>
-      )}
-    </div>
-  );
-};
 
+      {caption && <div><h3>Generated Caption:</h3><p>{caption}</p></div>}
+   
+      </div> ); };
+      
 export default ImageCaptioner;
