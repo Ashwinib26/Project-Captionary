@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model, Model
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.keras.applications import DenseNet201
 from tensorflow.keras.preprocessing.sequence import pad_sequences
@@ -9,14 +9,18 @@ import os
 from werkzeug.utils import secure_filename
 import spacy
 from transformers import T5ForConditionalGeneration, T5Tokenizer
+from string import punctuation
 
 app = Flask(__name__)
 UPLOAD_FOLDER = "static/uploaded"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
+# Ensure upload folder exists
+os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+
 # Load models
-caption_model = load_model("backend/models/caption_model.keras")
-tokenizer = pickle.load(open("backend/models/tokenizer.pkl", "rb"))
+caption_model = load_model("models/caption_model.keras")
+tokenizer = pickle.load(open("models/tokenizer.pkl", "rb"))
 nlp = spacy.load("en_core_web_sm")
 
 # Load DenseNet201 for feature extraction
@@ -66,8 +70,8 @@ def extractive_summary(text, percentage=0.3):
         if word.text.lower() not in spacy.lang.en.stop_words.STOP_WORDS and word.text not in punctuation:
             word_frequencies[word.text] = word_frequencies.get(word.text, 0) + 1
 
-    max_freq = max(word_frequencies.values())
-    for word in word_frequencies.keys():
+    max_freq = max(word_frequencies.values(), default=1)
+    for word in word_frequencies:
         word_frequencies[word] /= max_freq
 
     sentence_scores = {}
@@ -77,14 +81,14 @@ def extractive_summary(text, percentage=0.3):
                 sentence_scores[sent] = sentence_scores.get(sent, 0) + word_frequencies[word.text]
 
     sorted_sentences = sorted(sentence_scores, key=sentence_scores.get, reverse=True)
-    select_length = int(len(sorted_sentences) * percentage)
+    select_length = max(1, int(len(sorted_sentences) * percentage))
 
     return " ".join([str(sent) for sent in sorted_sentences[:select_length]])
 
 def abstractive_summary(text, word_limit=120):
     input_text = "summarize: " + text.strip()
     input_ids = t5_tokenizer.encode(input_text, return_tensors="pt", max_length=512, truncation=True)
-    summary_ids = t5_model.generate(input_ids, max_length=word_limit * 1.3, min_length=word_limit // 2, length_penalty=2.0, num_beams=4, early_stopping=True)
+    summary_ids = t5_model.generate(input_ids, max_length=int(word_limit * 1.3), min_length=word_limit // 2, length_penalty=2.0, num_beams=4, early_stopping=True)
     summary = t5_tokenizer.decode(summary_ids[0], skip_special_tokens=True)
     return summary
 
@@ -92,10 +96,11 @@ def abstractive_summary(text, word_limit=120):
 def index():
     caption = None
     summary = None
+    abstract_summary = None
     filename = None
 
     if request.method == "POST":
-        file = request.files["image"]
+        file = request.files.get("image")
         if file:
             filename = secure_filename(file.filename)
             file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
@@ -104,13 +109,12 @@ def index():
             feature = extract_features(file_path)
             caption = predict_caption(feature)
 
-        text = request.form.get("input_text", None)
+        text = request.form.get("input_text")
         if text:
             summary = extractive_summary(text)
             abstract_summary = abstractive_summary(text)
-            return render_template("index.html", caption=caption, filename=filename, summary=summary, abstract_summary=abstract_summary)
 
-    return render_template("index.html", caption=caption, filename=filename, summary=summary)
+    return render_template("index.html", caption=caption, filename=filename, summary=summary, abstract_summary=abstract_summary)
 
 if __name__ == "__main__":
     app.run(debug=True)
