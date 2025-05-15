@@ -1,0 +1,13 @@
+Flask
+flask-cors
+tensorflow
+keras
+numpy
+Pillow
+spacy
+scikit-learn
+transformers
+torch
+sentencepiece
+pickle-mixin
+werkzeug

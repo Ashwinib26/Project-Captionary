@@ -15,8 +15,8 @@ UPLOAD_FOLDER = "static/uploaded"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 # Load models
-caption_model = load_model("caption_model.keras")
-tokenizer = pickle.load(open("tokenizer.pkl", "rb"))
+caption_model = load_model("backend/models/caption_model.keras")
+tokenizer = pickle.load(open("backend/models/tokenizer.pkl", "rb"))
 nlp = spacy.load("en_core_web_sm")
 
 # Load DenseNet201 for feature extraction

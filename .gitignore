@@ -1,0 +1,31 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Flask uploads
+*.db
+instance/
+.env
+*.log
+*.pickle
+*.pkl
+
+# React
+node_modules/
+build/
+dist/
+.env.local
+.env.development
+.env.production
+.DS_Store
+
+# System
+*.swp
+*.bak
+Thumbs.db
