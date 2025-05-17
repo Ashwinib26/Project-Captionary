@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, request, jsonify
 from tensorflow.keras.models import load_model, Model
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.keras.applications import DenseNet201
@@ -37,8 +37,7 @@ max_length = 34
 
 def extract_features(image_path):
     img = load_img(image_path, target_size=(224, 224))
-    img = img_to_array(img)
-    img = img / 255.0
+    img = img_to_array(img) / 255.0
     img = np.expand_dims(img, axis=0)
     feature = fe.predict(img, verbose=0)
     return feature
@@ -88,33 +87,43 @@ def extractive_summary(text, percentage=0.3):
 def abstractive_summary(text, word_limit=120):
     input_text = "summarize: " + text.strip()
     input_ids = t5_tokenizer.encode(input_text, return_tensors="pt", max_length=512, truncation=True)
-    summary_ids = t5_model.generate(input_ids, max_length=int(word_limit * 1.3), min_length=word_limit // 2, length_penalty=2.0, num_beams=4, early_stopping=True)
+    summary_ids = t5_model.generate(
+        input_ids,
+        max_length=int(word_limit * 1.3),
+        min_length=word_limit // 2,
+        length_penalty=2.0,
+        num_beams=4,
+        early_stopping=True,
+    )
     summary = t5_tokenizer.decode(summary_ids[0], skip_special_tokens=True)
     return summary
 
-@app.route("/", methods=["GET", "POST"])
-def index():
-    caption = None
-    summary = None
-    abstract_summary = None
-    filename = None
+@app.route("/api/process", methods=["POST"])
+def process():
+    result = {
+        "caption": None,
+        "summary": None,
+        "abstract_summary": None,
+        "filename": None
+    }
 
-    if request.method == "POST":
-        file = request.files.get("image")
-        if file:
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-            file.save(file_path)
+    file = request.files.get("image")
+    text = request.form.get("input_text")
 
-            feature = extract_features(file_path)
-            caption = predict_caption(feature)
+    if file:
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+        file.save(filepath)
+        feature = extract_features(filepath)
+        caption = predict_caption(feature)
+        result["caption"] = caption
+        result["filename"] = filename
 
-        text = request.form.get("input_text")
-        if text:
-            summary = extractive_summary(text)
-            abstract_summary = abstractive_summary(text)
+    if text:
+        result["summary"] = extractive_summary(text)
+        result["abstract_summary"] = abstractive_summary(text)
 
-    return render_template("index.html", caption=caption, filename=filename, summary=summary, abstract_summary=abstract_summary)
+    return jsonify(result)
 
 if __name__ == "__main__":
     app.run(debug=True)
