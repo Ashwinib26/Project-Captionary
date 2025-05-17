@@ -10,28 +10,28 @@ from werkzeug.utils import secure_filename
 import spacy
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 from string import punctuation
+from flask_cors import CORS  # Enable cross-origin requests from React frontend
 
 app = Flask(__name__)
+CORS(app)  # Allow requests from React frontend
+
 UPLOAD_FOLDER = "static/uploaded"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-
-# Ensure upload folder exists
-os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Load models
 caption_model = load_model("models/caption_model.keras")
 tokenizer = pickle.load(open("models/tokenizer.pkl", "rb"))
 nlp = spacy.load("en_core_web_sm")
 
-# Load DenseNet201 for feature extraction
+# Load CNN for feature extraction
 cnn = DenseNet201(weights="imagenet", include_top=False, pooling="avg")
 fe = Model(inputs=cnn.input, outputs=cnn.output)
 
-# Load T5 model for abstractive summarization
+# Load T5 for abstractive summarization
 t5_tokenizer = T5Tokenizer.from_pretrained("t5-base")
 t5_model = T5ForConditionalGeneration.from_pretrained("t5-base")
 
-# Define vocab size and max_length for caption generation
 vocab_size = len(tokenizer.word_index) + 1
 max_length = 34
 
@@ -87,43 +87,41 @@ def extractive_summary(text, percentage=0.3):
 def abstractive_summary(text, word_limit=120):
     input_text = "summarize: " + text.strip()
     input_ids = t5_tokenizer.encode(input_text, return_tensors="pt", max_length=512, truncation=True)
-    summary_ids = t5_model.generate(
-        input_ids,
-        max_length=int(word_limit * 1.3),
-        min_length=word_limit // 2,
-        length_penalty=2.0,
-        num_beams=4,
-        early_stopping=True,
-    )
-    summary = t5_tokenizer.decode(summary_ids[0], skip_special_tokens=True)
-    return summary
+    summary_ids = t5_model.generate(input_ids, max_length=int(word_limit * 1.3), min_length=word_limit // 2, length_penalty=2.0, num_beams=4, early_stopping=True)
+    return t5_tokenizer.decode(summary_ids[0], skip_special_tokens=True)
 
-@app.route("/api/process", methods=["POST"])
-def process():
-    result = {
-        "caption": None,
-        "summary": None,
-        "abstract_summary": None,
-        "filename": None
-    }
+# ------------------ API ROUTES ------------------ #
 
-    file = request.files.get("image")
-    text = request.form.get("input_text")
+@app.route("/api/caption", methods=["POST"])
+def generate_caption():
+    if "image" not in request.files:
+        return jsonify({"error": "No image provided"}), 400
 
-    if file:
-        filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-        file.save(filepath)
-        feature = extract_features(filepath)
-        caption = predict_caption(feature)
-        result["caption"] = caption
-        result["filename"] = filename
+    file = request.files["image"]
+    filename = secure_filename(file.filename)
+    file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+    file.save(file_path)
 
-    if text:
-        result["summary"] = extractive_summary(text)
-        result["abstract_summary"] = abstractive_summary(text)
+    feature = extract_features(file_path)
+    caption = predict_caption(feature)
+    return jsonify({"caption": caption})
 
-    return jsonify(result)
+@app.route("/api/summarize", methods=["POST"])
+def summarize():
+    data = request.get_json()
+    text = data.get("text", "")
+
+    if not text.strip():
+        return jsonify({"error": "No text provided"}), 400
+
+    extractive = extractive_summary(text)
+    abstractive = abstractive_summary(text)
+    return jsonify({
+        "extractive_summary": extractive,
+        "abstractive_summary": abstractive
+    })
+
+# ------------------------------------------------- #
 
 if __name__ == "__main__":
     app.run(debug=True)
