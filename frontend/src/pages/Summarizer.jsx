@@ -19,39 +19,33 @@ const Summarizer = () => {
   };
 
   return (
-    <div className="home-container">
-      <h2 className="home-title">📝 Text Summarizer</h2>
-      <form onSubmit={handleSubmit} className="tool-card">
+    <div className="page-container center-container" style={{ flexDirection: 'column' }}>
+      <h2 className="page-title">📝 Text Summarizer</h2>
+
+      <form onSubmit={handleSubmit} className="input-form tool-card" style={{ maxWidth: '700px', width: '100%' }}>
         <textarea
           rows="8"
-          cols="60"
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Enter your text here..."
-          style={{
-            width: '100%',
-            padding: '10px',
-            borderRadius: '10px',
-            border: '1px solid #ccc',
-            fontSize: '16px',
-            marginBottom: '15px',
-          }}
-        ></textarea>
-        <button type="submit" className="card-button">Generate Summary</button>
+          className="text-input"
+          required
+        />
+        <button type="submit" className="primary-button">Generate Summary</button>
       </form>
 
       {(summary || abstractSummary) && (
-        <div className="tool-card" style={{ marginTop: '20px' }}>
+        <div className="tool-card" style={{ maxWidth: '700px', width: '100%', marginTop: '30px' }}>
           {summary && (
             <>
-              <h3>Extractive Summary:</h3>
-              <p>{summary}</p>
+              <h3 className="section-title">Extractive Summary:</h3>
+              <p className="output-text">{summary}</p>
             </>
           )}
           {abstractSummary && (
             <>
-              <h3>Abstractive Summary:</h3>
-              <p>{abstractSummary}</p>
+              <h3 className="section-title">Abstractive Summary:</h3>
+              <p className="output-text">{abstractSummary}</p>
             </>
           )}
         </div>
