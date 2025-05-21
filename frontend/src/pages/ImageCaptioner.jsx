@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import 'D:/projects/ML/Project-Captionary/frontend/src/App.css';
 
 const ImageCaptioner = () => {
   const [image, setImage] = useState(null);
@@ -12,9 +13,7 @@ const ImageCaptioner = () => {
 
     try {
       const response = await axios.post('http://127.0.0.1:5000/api/caption', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
       setCaption(response.data.caption);
     } catch (error) {
@@ -23,21 +22,21 @@ const ImageCaptioner = () => {
   };
 
   return (
-    <div>
-      <h2>Image Caption Generator</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="home-container">
+      <h2 className="home-title">🖼️ Image Caption Generator</h2>
+      <form onSubmit={handleSubmit} className="tool-card">
         <input
           type="file"
           accept="image/*"
           onChange={(e) => setImage(e.target.files[0])}
           required
+          className="card-button"
         />
-        <br />
-        <button type="submit">Generate Caption</button>
+        <button type="submit" className="card-button">Generate Caption</button>
       </form>
 
       {caption && (
-        <div>
+        <div className="tool-card" style={{ marginTop: '20px' }}>
           <h3>Generated Caption:</h3>
           <p>{caption}</p>
         </div>
