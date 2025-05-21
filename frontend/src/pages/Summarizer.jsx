@@ -9,7 +9,9 @@ const Summarizer = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/', { input_text: text });
+      const response = await axios.post('http://127.0.0.1:5000/api/summarize', {
+        input_text: text,
+      });
       setSummary(response.data.summary);
       setAbstractSummary(response.data.abstract_summary);
     } catch (error) {
@@ -32,8 +34,18 @@ const Summarizer = () => {
         <button type="submit">Generate Summary</button>
       </form>
 
-      {summary && <div><h3>Extractive Summary:</h3><p>{summary}</p></div>}
-      {abstractSummary && <div><h3>Abstractive Summary:</h3><p>{abstractSummary}</p></div>}
+      {summary && (
+        <div>
+          <h3>Extractive Summary:</h3>
+          <p>{summary}</p>
+        </div>
+      )}
+      {abstractSummary && (
+        <div>
+          <h3>Abstractive Summary:</h3>
+          <p>{abstractSummary}</p>
+        </div>
+      )}
     </div>
   );
 };
