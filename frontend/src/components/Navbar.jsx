@@ -5,11 +5,7 @@ const Navbar = () => {
   return (
     <nav style={styles.nav}>
       <div style={styles.logo}>
-        <Link to="/" style={styles.link}>🧠 SmartContentAI</Link>
-      </div>
-      <div style={styles.menu}>
-        <Link to="/summarize" style={styles.link}>Summarizer</Link>
-        <Link to="/caption" style={styles.link}>Image Captioner</Link>
+        <Link to="/" style={styles.link}>🧠 CaptioNary</Link>
       </div>
     </nav>
   );
@@ -35,7 +31,7 @@ const styles = {
   link: {
     color: '#fff',
     textDecoration: 'none',
-    fontSize: '1rem',
+    fontSize: '3rem',
   },
 };
 

@@ -5,7 +5,6 @@ import 'D:/projects/ML/Project-Captionary/frontend/src/App.css'; // make sure th
 const Home = () => {
   return (
     <div className="home-container">
-      <h1 className="home-title">Welcome to Captionary</h1>
       <p className="home-subtitle">AI-Powered Tools for Image Captioning and Text Summarization</p>
       
       <div className="card-container">
