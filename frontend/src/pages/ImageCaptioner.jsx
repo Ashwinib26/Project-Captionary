@@ -12,7 +12,7 @@ const ImageCaptioner = () => {
     if (file) {
       setImage(file);
       setPreview(URL.createObjectURL(file));
-      setCaption(''); // Reset caption on new image
+      setCaption('');
     }
   };
 
@@ -30,38 +30,39 @@ const ImageCaptioner = () => {
       setCaption(response.data.caption);
     } catch (error) {
       console.error('Error generating caption:', error);
-      setCaption('Failed to generate caption. Please try again.');
+      setCaption('❌ Failed to generate caption. Please try again.');
     }
   };
 
   return (
-    <div className="page-container center-container">
-      <div>
-        <h2 className="page-title">🖼️ Image Caption Generator</h2>
-        <form onSubmit={handleSubmit} className="input-form">
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            required
-          />
-          <button type="submit" className="btn">Generate Caption</button>
-        </form>
+    <div className="caption-container">
+      <h2 className="caption-title">🖼️ Image Caption Generator</h2>
+      <form onSubmit={handleSubmit} className="caption-form">
+        <label htmlFor="imageInput" className="file-label">Choose an Image</label>
+        <input
+          id="imageInput"
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          required
+          className="file-input"
+        />
+        <button type="submit" className="btn-generate">Generate Caption</button>
+      </form>
 
-        {preview && (
-          <div className="output">
-            <h3>Uploaded Image:</h3>
-            <img src={preview} alt="Uploaded Preview" className="preview-image" />
-          </div>
-        )}
+      {preview && (
+        <div className="preview-section">
+          <h3 className="section-title">📷 Preview:</h3>
+          <img src={preview} alt="Uploaded Preview" className="preview-image" />
+        </div>
+      )}
 
-        {caption && (
-          <div className="output">
-            <h3>Generated Caption:</h3>
-            <p>{caption}</p>
-          </div>
-        )}
-      </div>
+      {caption && (
+        <div className="caption-section">
+          <h3 className="section-title">📝 Caption:</h3>
+          <p className="caption-text">{caption}</p>
+        </div>
+      )}
     </div>
   );
 };

@@ -310,6 +310,87 @@ body {
   padding: 20px;
 }
 
+.caption-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f4f2e6;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.caption-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.caption-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.file-label {
+  font-weight: 600;
+  color: #444;
+}
+
+.file-input {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background-color: #fff;
+}
+
+.btn-generate {
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-generate:hover {
+  background-color: #357bd8;
+}
+
+.preview-section, .caption-section {
+  margin-top: 1.5rem;
+}
+
+.section-title {
+  font-size: 1.3rem;
+  color: #222;
+  margin-bottom: 0.5rem;
+}
+
+.preview-image {
+  max-width: 300px;
+  height: auto;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  margin-top: 1rem;
+}
+
+.caption-text {
+  font-size: 1.1rem;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  color: #333;
+}
+
 /* Responsive for smaller devices */
 @media (max-width: 768px) {
   .text-input {
