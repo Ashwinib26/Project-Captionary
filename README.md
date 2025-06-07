@@ -1,6 +1,6 @@
-# 📸 CAPTIONARY: United Platform for Image Caption Generation and Text Summary Generation
+# 📸 CAPTIONARY: A United Platform 
 
-CAPTIONARY is a full-stack AI-powered web application that provides two core functionalities:
+It is a full-stack AI-powered web application that provides two core functionalities:
 - **Text Summarization** (both extractive and abstractive)
 - **Image Caption Generation** (deep learning-based visual understanding)
 
@@ -29,7 +29,9 @@ CAPTIONARY/
 │
 ├── backend/                 # Flask API for ML models
 │   ├── app.py               # Main API routes
-|   |── Models/
+|   └── Models/
+      ├── caption_model.h5
+      └── summarizer_model.pt
 │   ├── static/              # Stores uploaded images
 │   ├── requirements.txt
 │
@@ -39,16 +41,25 @@ CAPTIONARY/
 
 ---
 
+## 📸 Screenshots
+
+| Home | Text Summarizer | Image Captioner |
+|------|------------------|------------------|
+| <img src="https://github.com/user-attachments/assets/7696ed75-f193-41de-80d6-3e159cb295f8" alt="home" width="300"/> | <img src="https://github.com/user-attachments/assets/d098ac2f-9f49-41e5-bc94-d3d385f0db82" alt="text summary" width="300"/> | <img src="https://github.com/user-attachments/assets/cab36bd7-7594-4bd0-b87f-e3e830651318" alt="image caption" width="300"/> |
+
+
+---
+
 ## 🌟 Features
 
 ### 📄 Text Summarization
 - **Extractive Summary**: Highlights key sentences using NLP methods.
-- **Abstractive Summary**: Generates human-like summaries using transformer models (e.g., T5/BART).
+- **Abstractive Summary**: Generates human-like summaries using Transformer-based T5/BART.
 - Real-time summary generation from user input.
 
 ### 🖼️ Image Captioning
 - Upload any image to generate a meaningful caption.
-- Uses CNN + LSTM/Transformer models to interpret visual features.
+- Uses CNN (ResNet50) + LSTM models to interpret visual features.
 
 ### 💻 Tech Stack
 - **Frontend**: React, JavaScript, Axios, CSS3
@@ -59,10 +70,10 @@ CAPTIONARY/
 
 ## 🚀 Getting Started
 
-### 🧩 Prerequisites
-- Node.js and npm or yarn
+### 🧩 Requirements
+- Node.js and npm
 - Python 3.x
-- Flask and ML dependencies
+- Flask and ML dependencies(tensorflow)
 
 ---
 
@@ -94,12 +105,18 @@ Make sure model weights and preprocessing pipelines are in place.
 
 ## 💡 Future Improvements
 
-* Add history and user login
-* Support for PDF or image-to-text summarization
+* Session Management
 * Fine-tuning summarization and captioning models
 * Deploy to cloud (Render, HuggingFace Spaces, or AWS)
 
 ---
+
+## ⚠️ Known Issues
+
+- Model loading time may delay captioning slightly.
+- Summarization fails with extremely long or poor quality text.
+
+ ---
 
 ### 🤝 Contributing
 
@@ -108,7 +125,8 @@ Make sure model weights and preprocessing pipelines are in place.
 3. Commit your changes
 4. Push to the branch
 5. Create a pull request
-
+⭐ Star this repo if you liked it!
+   
 ---
 
 ### 🙋‍♀️ Support
