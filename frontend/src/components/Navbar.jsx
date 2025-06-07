@@ -7,6 +7,11 @@ const Navbar = () => {
       <div style={styles.logo}>
         <Link to="/" style={styles.link}>🤖 CaptioNary</Link>
       </div>
+      <div style={styles.menu}>
+        <Link to="/" style={styles.link}>Home</Link>
+        <Link to="/summarize" style={styles.link}>Summary</Link>
+        <Link to="/caption" style={styles.link}>Caption</Link>
+      </div>
     </nav>
   );
 };
@@ -18,25 +23,25 @@ const styles = {
     alignItems: 'center',
     backgroundColor: '#333',
     padding: '1rem 2rem',
-    color: '#fff',
+    color: '#8EC5FC',
   },
   logo: {
-    fontSize: '1.5rem',
+    fontSize: '1.6rem',
     fontWeight: 'bold',
+    color: '#8EC5FC',
   },
   menu: {
     display: 'flex',
-    gap: '1.5rem',
+    gap: '2rem',
   },
   link: {
-  color: '#ffffff',
-  textDecoration: 'none',
-  fontSize: '2.2rem',
-  fontWeight: '600',
-  letterSpacing: '0.5px',
-  fontFamily: '"Poppins", "Roboto", "Segoe UI", sans-serif',
-  transition: 'color 0.3s ease',
-},
+    color: '#E0C3FC',
+    textDecoration: 'none',
+    fontSize: '1.0rem',
+    fontWeight: '500',
+    fontFamily: '"Poppins", "Roboto", "Segoe UI", sans-serif',
+    transition: 'color 0.3s ease',
+  },
 };
 
 export default Navbar;
