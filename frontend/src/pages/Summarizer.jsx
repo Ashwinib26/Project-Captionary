@@ -6,13 +6,28 @@ const Summarizer = () => {
   const [text, setText] = useState('');
   const [summary, setSummary] = useState('');
   const [abstractSummary, setAbstractSummary] = useState('');
+  const [summaryType, setSummaryType] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:5000/api/summarize', { text });
-      setSummary(response.data.extractive_summary);
-      setAbstractSummary(response.data.abstractive_summary);
+      const response = await axios.post('http://127.0.0.1:5000/api/summarize', {
+        text,
+        summary_type: summaryType,
+      });
+
+      // Reset both summaries first
+      setSummary('');
+      setAbstractSummary('');
+
+      if (summaryType === 'extractive') {
+        setSummary(response.data.extractive_summary);
+      } else if (summaryType === 'abstractive') {
+        setAbstractSummary(response.data.abstractive_summary);
+      } else {
+        setSummary(response.data.extractive_summary);
+        setAbstractSummary(response.data.abstractive_summary);
+      }
     } catch (error) {
       console.error('Error summarizing:', error);
     }
@@ -31,6 +46,18 @@ const Summarizer = () => {
           className="text-input"
           required
         />
+
+        <select
+          value={summaryType}
+          onChange={(e) => setSummaryType(e.target.value)}
+          className="text-input2"
+        >
+          <option value="" disabled hidden>Select Summary Type</option>
+          <option value="both">Both Summaries</option>
+          <option value="extractive">Extractive Summary Only</option>
+          <option value="abstractive">Abstractive Summary Only</option>
+        </select>
+
         <button type="submit" className="primary-button">Generate Summary</button>
       </form>
 

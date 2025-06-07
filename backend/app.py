@@ -116,22 +116,26 @@ def generate_caption():
         print("Error generating caption:", e)
         return jsonify({"error": "Failed to process image"}), 500
 
-@app.route("/api/summarize", methods=["POST"])
+@app.route('/api/summarize', methods=['POST'])
 def summarize():
-    try:
-        data = request.get_json()
-        text = data.get("text", "")
-        if not text.strip():
-            return jsonify({"error": "No text provided"}), 400
+    data = request.json
+    text = data['text']
+    summary_type = data.get('summary_type', 'both')
+
+    extractive = ""
+    abstractive = ""
+
+    if summary_type in ['both', 'extractive']:
         extractive = extractive_summary(text)
+
+    if summary_type in ['both', 'abstractive']:
         abstractive = abstractive_summary(text)
-        return jsonify({
-            "extractive_summary": extractive,
-            "abstractive_summary": abstractive
-        })
-    except Exception as e:
-        print("Error in summarization:", e)
-        return jsonify({"error": "Summarization failed"}), 500
+
+    return jsonify({
+        'extractive_summary': extractive,
+        'abstractive_summary': abstractive
+    })
+
 
 # ---------- Run App ---------- #
 

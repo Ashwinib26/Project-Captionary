@@ -112,7 +112,6 @@ body {
   color: #555;
 }
 
-/* Input Forms or Textarea Sections
 .input-form {
   display: flex;
   flex-direction: column;
@@ -137,12 +136,11 @@ body {
   border-color: #7F00FF;
 }
 
-/* File Input specific */
-/* .input-form input[type="file"] {
+.input-form input[type="file"] {
   cursor: pointer;
-} */
+} 
 
-/* .input-form input[type="file"]:focus {
+.input-form input[type="file"]:focus {
   border-color: #7F00FF;
 } 
 
@@ -156,19 +154,19 @@ body {
   font-size: 1rem;
   color: #333;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-} */
+} 
 
 .input-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  align-items: center; /* centers button horizontally */
-  padding: 30px 40px; /* give some padding inside the form */
+  align-items: center; 
+  padding: 30px 40px; 
   box-sizing: border-box;
 }
 
 .text-input {
-  width: 100%; /* full width inside form */
+  width: 100%; 
   min-height: 140px; /* a bit taller textarea for 8 rows */
   padding: 15px 20px;
   border-radius: 15px;
@@ -177,6 +175,30 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   resize: vertical;
   transition: border-color 0.3s ease;
+}
+
+.text-input2 {
+  padding: 10px 12px;
+  font-size: 16px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background-color: #f7a7a7;
+  color: #333;
+  appearance: none;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.text-input2:hover {
+  border-color: #999;
+}
+
+.text-input2:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
 }
 
 .text-input:focus {

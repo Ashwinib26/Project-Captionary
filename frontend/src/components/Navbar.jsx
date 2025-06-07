@@ -5,7 +5,7 @@ const Navbar = () => {
   return (
     <nav style={styles.nav}>
       <div style={styles.logo}>
-        <Link to="/" style={styles.link}>🧠 CaptioNary</Link>
+        <Link to="/" style={styles.link}>🤖 CaptioNary</Link>
       </div>
     </nav>
   );
@@ -29,10 +29,14 @@ const styles = {
     gap: '1.5rem',
   },
   link: {
-    color: '#fff',
-    textDecoration: 'none',
-    fontSize: '3rem',
-  },
+  color: '#ffffff',
+  textDecoration: 'none',
+  fontSize: '2.2rem',
+  fontWeight: '600',
+  letterSpacing: '0.5px',
+  fontFamily: '"Poppins", "Roboto", "Segoe UI", sans-serif',
+  transition: 'color 0.3s ease',
+},
 };
 
 export default Navbar;
