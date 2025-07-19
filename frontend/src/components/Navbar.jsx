@@ -8,7 +8,6 @@ const Navbar = () => {
         <Link to="/" style={styles.link}>🤖 CaptioNary</Link>
       </div>
       <div style={styles.menu}>
-        <Link to="/" style={styles.link}>Home</Link>
         <Link to="/summarize" style={styles.link}>Summary</Link>
         <Link to="/caption" style={styles.link}>Caption</Link>
       </div>
