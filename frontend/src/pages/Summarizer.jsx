@@ -40,6 +40,10 @@ const Summarizer = () => {
           📝 AI Text Summarizer
         </h1>
 
+        <h1 className="page-title" style={{ textAlign: 'center', marginBottom: '20px', fontSize: '28px' }}>
+          Summarize your text here!
+        </h1>
+
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <textarea
             rows="8"
@@ -66,8 +70,7 @@ const Summarizer = () => {
 
           <button
             type="submit"
-            className="primary-button"
-            style={{ padding: '12px', fontSize: '16px', background: '#007bff', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
+            className="card-button"
           >
             Generate Summary
           </button>

@@ -37,6 +37,7 @@ const ImageCaptioner = () => {
   return (
     <div className="caption-container">
       <h2 className="caption-title">🖼️ Image Caption Generator</h2>
+      <h4 className="caption-title">Get a caption for your image here !</h4>
       <form onSubmit={handleSubmit} className="caption-form">
         <label htmlFor="imageInput" className="file-label">Choose an Image</label>
         <input
@@ -47,7 +48,7 @@ const ImageCaptioner = () => {
           required
           className="file-input"
         />
-        <button type="submit" className="btn-generate">Generate Caption</button>
+        <button type="submit" className="card-button">Generate Caption</button>
       </form>
 
       {preview && (
